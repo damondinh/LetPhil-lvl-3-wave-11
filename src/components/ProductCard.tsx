@@ -24,6 +24,15 @@ export const ProductCard = (props: Product) => {
 					</span>
 					<span className="text-sm text-slate-500"> ★ {props.rating}</span>
 				</div>
+
+				{/* Low stock badge */}
+				{props.stock < 10 && (
+					<div className="">
+						<span className="rounded-full bg-amber-100 px-2 py-1 text-xs font-semibold text-amber-800">
+							Low stock
+						</span>
+					</div>
+				)}
 			</div>
 		</div>
 	);
