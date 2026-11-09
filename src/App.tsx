@@ -6,6 +6,7 @@ import { Navbar } from './components/Navbar.tsx';
 import type { NavLink } from './types/navLink';
 import { Footer } from './components/Footer.tsx';
 import { StatsBar } from './components/StatsBar.tsx';
+import { groupByCategory } from './utils/groupByCategory';
 
 const navLinks: NavLink[] = [
 	{ label: 'Shop', href: '/' },
@@ -13,6 +14,7 @@ const navLinks: NavLink[] = [
 	{ label: 'Cart', href: '/cart' },
 ];
 const company = 'SummitGear';
+const groupedProducts = groupByCategory(products);
 
 function App() {
 	return (
@@ -20,6 +22,21 @@ function App() {
 			<Navbar navLinks={navLinks} />
 			<main className="flex-grow p-8">
 				<StatsBar products={products} />
+
+				{/* Shop by category */}
+				<div>
+					<h1 className="text-3xl font-bold mt-4">Shop by category</h1>
+					{Object.entries(groupedProducts).map(
+						([category, categoryProducts]) => (
+							<ProductSection
+								key={category}
+								title={category[0].toUpperCase() + category.slice(1)}
+								products={categoryProducts}
+							/>
+						),
+					)}
+				</div>
+
 				<ProductSection
 					title="Deals under $20"
 					products={products.filter((product) => product.price < 20)}
