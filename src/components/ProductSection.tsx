@@ -14,3 +14,5 @@ export const ProductSection = ({ title, products }: ProductSectionProps) => {
 		</div>
 	);
 };
+
+export default ProductSection;

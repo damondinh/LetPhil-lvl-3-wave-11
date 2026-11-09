@@ -32,6 +32,10 @@ function App() {
 						(product) => product.category === 'furniture',
 					)}
 				/>
+				<ProductSection
+					title="Luxury (over $5000)"
+					products={products.filter((product) => product.price > 5000)}
+				/>
 			</main>
 			<Footer company={company} />
 		</div>
