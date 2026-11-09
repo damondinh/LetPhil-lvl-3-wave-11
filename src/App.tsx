@@ -5,6 +5,7 @@ import { ProductSection } from './components/ProductSection.tsx';
 import { Navbar } from './components/Navbar.tsx';
 import type { NavLink } from './types/navLink';
 import { Footer } from './components/Footer.tsx';
+import { StatsBar } from './components/StatsBar.tsx';
 
 const navLinks: NavLink[] = [
 	{ label: 'Shop', href: '/' },
@@ -18,6 +19,7 @@ function App() {
 		<div className="flex flex-col min-h-screen bg-gray-50">
 			<Navbar navLinks={navLinks} />
 			<main className="flex-grow p-8">
+				<StatsBar products={products} />
 				<ProductSection
 					title="Deals under $20"
 					products={products.filter((product) => product.price < 20)}

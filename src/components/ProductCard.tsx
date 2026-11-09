@@ -2,9 +2,9 @@ import type { Product } from '../types/product';
 
 export const ProductCard = (props: Product) => {
 	return (
-		<div className="max-w-sm rounded-2xl border border-slate-200 bg-white shadow-md mt-4">
+		<div className="rounded-2xl border border-slate-200 bg-white shadow-md mt-4">
 			{/* Image */}
-			<div className="flex h-80 items-center bg-slate-100 p-8">
+			<div className="flex h-80 items-center justify-center bg-slate-100 p-8">
 				<img src={props.thumbnail} alt={props.brand} />
 			</div>
 
