@@ -11,3 +11,5 @@ export const EmptyState = ({ message }: EmptyStateProps) => {
 		</div>
 	);
 };
+
+export default EmptyState;
