@@ -2,27 +2,30 @@ import type { Product } from '../types/product';
 
 export const ProductCard = (props: Product) => {
 	return (
-		<div className="rounded-2xl border border-slate-200 bg-white shadow-md mt-4">
+		<div className="rounded-2xl border border-slate-200 bg-white shadow-md mt-4 dark:bg-slate-800 dark:border-none">
 			{/* Image */}
-			<div className="flex h-80 items-center justify-center bg-slate-100 p-8">
+			<div className="rounded-t-2xl flex h-80 items-center justify-center bg-slate-100 p-8 dark:bg-slate-700">
 				<img src={props.thumbnail} alt={props.brand} />
 			</div>
 
 			{/* Product Description */}
 			<div className="p-5">
 				{props.brand && (
-					<p className="text-sm font-semibold uppercase text-slate-500">
+					<p className="text-sm font-semibold uppercase text-slate-500 dark:text-slate-400">
 						{props.brand}
 					</p>
 				)}
-				<h3 className="font-bold">{props.title}</h3>
+				<h3 className="font-bold dark:text-white">{props.title}</h3>
 
 				{/* Price and Rating */}
 				<div className="mt-4 flex items-center justify-between">
-					<span className="text-xl font-bold text-emerald-800">
+					<span className="text-xl font-bold text-emerald-800 dark:text-emerald-600">
 						${props.price.toFixed(2)}
 					</span>
-					<span className="text-sm text-slate-500"> ★ {props.rating}</span>
+					<span className="text-sm text-slate-500 dark:text-slate-400">
+						{' '}
+						★ {props.rating}
+					</span>
 				</div>
 
 				{/* Low stock badge */}
