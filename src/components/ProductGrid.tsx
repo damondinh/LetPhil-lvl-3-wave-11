@@ -4,9 +4,15 @@ import { EmptyState } from './EmptyState.tsx';
 
 type ProductGridProps = {
 	products: Product[];
+	favourites: number[];
+	onToggleFavourite: (productId: number) => void;
 };
 
-export const ProductGrid = ({ products }: ProductGridProps) => {
+export const ProductGrid = ({
+	products,
+	favourites,
+	onToggleFavourite,
+}: ProductGridProps) => {
 	const visibleProducts = products.slice(0, 4);
 	const remainingProducts = products.length - visibleProducts.length;
 	let content;
@@ -23,15 +29,9 @@ export const ProductGrid = ({ products }: ProductGridProps) => {
 					{visibleProducts.map((product) => (
 						<ProductCard
 							key={product.id}
-							id={product.id}
-							title={product.title}
-							description={product.description}
-							category={product.category}
-							price={product.price}
-							rating={product.rating}
-							stock={product.stock}
-							brand={product.brand}
-							thumbnail={product.thumbnail}
+							product={product}
+							isFavourite={favourites.includes(product.id)}
+							onToggleFavourite={onToggleFavourite}
 						/>
 					))}
 				</div>

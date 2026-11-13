@@ -17,6 +17,7 @@ function App() {
 	// Use state variables
 	const [searchText, setSearchText] = useState('');
 	const [theme, setTheme] = useState<Theme>('light');
+	const [favourites, setFavourites] = useState<number[]>([]);
 
 	// Other variables
 	const navLinks: NavLink[] = [
@@ -32,8 +33,22 @@ function App() {
 
 	// Toggle Light/Dark theme
 	const toggleTheme = () => {
-		//setTheme(theme === 'light' ? 'dark' : 'light');
-		setTheme((currentTheme) => (currentTheme === 'light' ? 'dark' : 'light'));
+		setTheme(theme === 'light' ? 'dark' : 'light');
+		//setTheme((currentTheme) => (currentTheme === 'light' ? 'dark' : 'light'));
+	};
+
+	// Toggle Favourites
+	/* avoid pushing and splice bc it mutates the original array */
+	const toggleFavourite = (productId: number) => {
+		setFavourites((currentFavourites) => {
+			// 1. Check product exists in favourites: Remove it from favourites
+			if (currentFavourites.includes(productId)) {
+				return currentFavourites.filter((id) => id !== productId); // filter the id out of the favourites state
+			}
+
+			// 2. Product doesn't exist in favourites: Add it to favourites
+			return [...currentFavourites, productId]; // spread operator creates copy of array and add new product id
+		});
 	};
 
 	return (
@@ -66,6 +81,8 @@ function App() {
 										key={category}
 										title={category[0].toUpperCase() + category.slice(1)}
 										products={categoryProducts}
+										favourites={favourites}
+										onToggleFavourite={toggleFavourite}
 									/>
 								),
 							)}
@@ -74,7 +91,11 @@ function App() {
 					filteredProducts.length === 0 ? (
 						<EmptyState message="No products found" />
 					) : (
-						<ProductGrid products={filteredProducts} />
+						<ProductGrid
+							products={filteredProducts}
+							favourites={favourites}
+							onToggleFavourite={toggleFavourite}
+						/>
 					)}
 				</div>
 			</main>
