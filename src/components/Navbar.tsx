@@ -27,7 +27,12 @@ export const Navbar = ({ navLinks, theme, toggleTheme }: NavbarProps) => {
 						key={link.href}
 						href={link.href}
 						className="text-sm text-slate-600 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400">
-						{link.label}
+						{link.label}{' '}
+						{link.count !== undefined && link.count > 0 && (
+							<span className="rounded-full bg-emerald-800 px-1.5 py-0.5 text-xs font-semibold text-white">
+								{link.count}
+							</span>
+						)}
 					</a>
 				))}
 				<button

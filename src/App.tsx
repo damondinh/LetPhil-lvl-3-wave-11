@@ -22,7 +22,7 @@ function App() {
 	// Other variables
 	const navLinks: NavLink[] = [
 		{ label: 'Shop', href: '/' },
-		{ label: 'Favourites', href: '/favourites' },
+		{ label: 'Favourites', href: '/favourites', count: favourites.length },
 		{ label: 'Cart', href: '/cart' },
 	];
 	const company = 'SummitGear';
@@ -34,7 +34,6 @@ function App() {
 	// Toggle Light/Dark theme
 	const toggleTheme = () => {
 		setTheme(theme === 'light' ? 'dark' : 'light');
-		//setTheme((currentTheme) => (currentTheme === 'light' ? 'dark' : 'light'));
 	};
 
 	// Toggle Favourites
