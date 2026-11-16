@@ -4,13 +4,18 @@ type ProductCardProps = {
 	product: Product;
 	isFavourite: boolean;
 	onToggleFavourite: (productId: number) => void;
+	cartQuantity: number;
+	onAddToCart: () => void;
 };
 
 export const ProductCard = ({
 	product,
 	isFavourite,
 	onToggleFavourite,
+	cartQuantity,
+	onAddToCart,
 }: ProductCardProps) => {
+	const stockLimitReached = cartQuantity >= product.stock;
 	return (
 		<div className="rounded-2xl border border-slate-200 bg-white shadow-md mt-4 dark:bg-slate-800 dark:border-none">
 			{/* Image */}
@@ -55,6 +60,22 @@ export const ProductCard = ({
 						★ {product.rating}
 					</span>
 				</div>
+
+				{/* Add to Cart */}
+				<button
+					type="button"
+					onClick={onAddToCart}
+					disabled={stockLimitReached}
+					className="mt-4 w-full rounded-lg bg-emerald-700
+             px-4 py-2 text-sm font-semibold text-white
+             hover:bg-emerald-800
+             disabled:cursor-not-allowed
+             disabled:bg-slate-300
+             disabled:text-slate-500
+             dark:disabled:bg-slate-700
+             dark:disabled:text-slate-400">
+					{stockLimitReached ? 'Max in cart' : 'Add To Cart'}
+				</button>
 			</div>
 		</div>
 	);
