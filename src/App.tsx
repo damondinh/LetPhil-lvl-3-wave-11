@@ -14,6 +14,7 @@ import { SearchBar } from './components/SearchBar.tsx';
 import { ProductGrid } from './components/ProductGrid.tsx';
 import { EmptyState } from './components/EmptyState.tsx';
 import { ProductAll } from './components/ProductAll.tsx';
+import { CartPanel } from './components/CartPanel.tsx';
 import { groupByCategory } from './utils/groupByCategory';
 
 function App() {
@@ -22,22 +23,7 @@ function App() {
 	const [theme, setTheme] = useState<Theme>('light');
 	const [favourites, setFavourites] = useState<number[]>([]);
 	const [cart, setCart] = useState<CartItem[]>([]);
-
-	// Other variables
-	const navLinks: NavLink[] = [
-		{ label: 'Shop', href: '/' },
-		{ label: 'Favourites', href: '/favourites', count: favourites.length },
-		{
-			label: 'Cart',
-			href: '/cart',
-			count: cart.reduce((total, item) => total + item.quantity, 0),
-		},
-	];
-	const company = 'SummitGear';
-	const groupedProducts = groupByCategory(products);
-	const filteredProducts = products.filter((product) =>
-		product.title.toLowerCase().includes(searchText.toLowerCase()),
-	);
+	const [isCartOpen, setIsCartOpen] = useState(false);
 
 	// Toggle Light/Dark theme
 	const toggleTheme = () => {
@@ -84,6 +70,52 @@ function App() {
 			return [...currentCart, { product, quantity: 1 }];
 		});
 	};
+
+	// Open & Close Cart
+	const openCart = () => {
+		setIsCartOpen(true);
+	};
+	const closeCart = () => {
+		setIsCartOpen(false);
+	};
+
+	// Decrease quantity in Cart
+	const decreaseQuantity = (productId: number) => {
+		setCart((currentCart) =>
+			currentCart
+				.map((item) =>
+					item.product.id === productId
+						? { ...item, quantity: item.quantity - 1 }
+						: item,
+				)
+				.filter((item) => item.quantity > 0),
+		);
+	};
+
+	// Remove from Cart
+	const removeFromCart = (productId: number) => {
+		setCart((currentCart) =>
+			currentCart.filter((item) => item.product.id !== productId),
+		);
+	};
+
+	// Other variables
+	const navLinks: NavLink[] = [
+		{ label: 'Shop', href: '/' },
+		{ label: 'Favourites', href: '/favourites', count: favourites.length },
+		{
+			label: 'Cart',
+			href: '/cart',
+			count: cart.reduce((total, item) => total + item.quantity, 0),
+			onClick: openCart,
+		},
+	];
+	const company = 'SummitGear';
+	const groupedProducts = groupByCategory(products);
+	const filteredProducts = products.filter((product) =>
+		product.title.toLowerCase().includes(searchText.toLowerCase()),
+	);
+
 	return (
 		<div
 			className={`${theme === 'dark' ? 'dark' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-slate-900`}>
@@ -123,6 +155,15 @@ function App() {
 				</div>
 			</main>
 			<Footer company={company} />
+
+			<CartPanel
+				cart={cart}
+				isOpen={isCartOpen}
+				onClose={closeCart}
+				onIncrease={addToCart}
+				onDecrease={decreaseQuantity}
+				onRemove={removeFromCart}
+			/>
 		</div>
 	);
 }
