@@ -15,6 +15,7 @@ import { ProductGrid } from './components/ProductGrid.tsx';
 import { EmptyState } from './components/EmptyState.tsx';
 import { ProductAll } from './components/ProductAll.tsx';
 import { CartPanel } from './components/CartPanel.tsx';
+import { SuggestProductForm } from './components/SuggestProductForm.tsx';
 import { groupByCategory } from './utils/groupByCategory';
 
 function App() {
@@ -112,6 +113,7 @@ function App() {
 	];
 	const company = 'SummitGear';
 	const groupedProducts = groupByCategory(products);
+	const categories = Object.keys(groupedProducts);
 	const filteredProducts = products.filter((product) =>
 		product.title.toLowerCase().includes(searchText.toLowerCase()),
 	);
@@ -153,6 +155,9 @@ function App() {
 						/>
 					)}
 				</div>
+
+				{/* Suggest Product Form */}
+				<SuggestProductForm categories={categories} />
 			</main>
 			<Footer company={company} />
 
