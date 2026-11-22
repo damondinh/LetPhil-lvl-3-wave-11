@@ -1,11 +1,11 @@
 // This is your storefront. Each ticket adds a piece to it.
 // Start with tickets/day-1/1.1-product-type-and-card.md
-import { useState } from 'react';
-import { products } from './data/products';
+import { useState, useEffect } from 'react';
 import type { NavLink } from './types/navLink';
 import type { Theme } from './types/theme';
 import type { CartItem } from './types/cart';
 import type { Product } from './types/product.ts';
+import type { ProductResponse } from './types/productResponse.ts';
 import { ProductSection } from './components/ProductSection.tsx';
 import { Navbar } from './components/Navbar.tsx';
 import { Footer } from './components/Footer.tsx';
@@ -20,6 +20,7 @@ import { groupByCategory } from './utils/groupByCategory';
 
 function App() {
 	// Use state variables
+	const [products, setProducts] = useState<Product[]>([]);
 	const [searchText, setSearchText] = useState('');
 	const [theme, setTheme] = useState<Theme>('light');
 	const [favourites, setFavourites] = useState<number[]>([]);
@@ -118,6 +119,24 @@ function App() {
 		product.title.toLowerCase().includes(searchText.toLowerCase()),
 	);
 
+	useEffect(() => {
+		const fetchProducts = async () => {
+			try {
+				const response = await fetch('https://dummyjson.com/products');
+
+				if (!response.ok) {
+					throw new Error(`HTTP error: ${response.status}`);
+				}
+
+				const data: ProductResponse = await response.json();
+
+				setProducts(data.products);
+			} catch (error) {
+				console.error('Failed to fetch products:', error);
+			}
+		};
+		fetchProducts();
+	}, []);
 	return (
 		<div
 			className={`${theme === 'dark' ? 'dark' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-slate-900`}>
