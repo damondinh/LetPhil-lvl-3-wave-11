@@ -16,6 +16,8 @@ import { EmptyState } from './components/EmptyState.tsx';
 import { ProductAll } from './components/ProductAll.tsx';
 import { CartPanel } from './components/CartPanel.tsx';
 import { SuggestProductForm } from './components/SuggestProductForm.tsx';
+import { LoadingState } from './components/LoadingState.tsx';
+import { ErrorState } from './components/ErrorState.tsx';
 import { groupByCategory } from './utils/groupByCategory';
 
 function App() {
@@ -26,6 +28,8 @@ function App() {
 	const [favourites, setFavourites] = useState<number[]>([]);
 	const [cart, setCart] = useState<CartItem[]>([]);
 	const [isCartOpen, setIsCartOpen] = useState(false);
+	const [loading, setLoading] = useState(true);
+	const [error, setError] = useState<string | null>(null);
 
 	// Toggle Light/Dark theme
 	const toggleTheme = () => {
@@ -119,24 +123,31 @@ function App() {
 		product.title.toLowerCase().includes(searchText.toLowerCase()),
 	);
 
-	useEffect(() => {
-		const fetchProducts = async () => {
-			try {
-				const response = await fetch('https://dummyjson.com/products');
+	const fetchProducts = async () => {
+		try {
+			setLoading(true);
 
-				if (!response.ok) {
-					throw new Error(`HTTP error: ${response.status}`);
-				}
+			const response = await fetch('https://dummyjson.com/products');
 
-				const data: ProductResponse = await response.json();
-
-				setProducts(data.products);
-			} catch (error) {
-				console.error('Failed to fetch products:', error);
+			if (!response.ok) {
+				throw new Error(`HTTP error: ${response.status}`);
 			}
-		};
+
+			const data: ProductResponse = await response.json();
+
+			setProducts(data.products);
+		} catch (error) {
+			console.error('Failed to fetch products:', error);
+			setError("We couldn't load products. Please try again.");
+		} finally {
+			setLoading(false);
+		}
+	};
+
+	useEffect(() => {
 		fetchProducts();
 	}, []);
+
 	return (
 		<div
 			className={`${theme === 'dark' ? 'dark' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-slate-900`}>
@@ -151,8 +162,11 @@ function App() {
 						Showing {filteredProducts.length} of {products.length} products
 					</p>
 
-					{/* Display Search Results*/}
-					{searchText === '' ? (
+					{loading ? (
+						<LoadingState />
+					) : error ? (
+						<ErrorState message={error} onRetry={fetchProducts} />
+					) : searchText === '' ? (
 						// Empty Search: -> Default: display all products
 						<ProductAll
 							products={products}
