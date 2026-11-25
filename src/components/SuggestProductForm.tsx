@@ -88,7 +88,7 @@ export const SuggestProductForm = ({ categories }: SuggestProductFormProps) => {
 					</div>
 					{/* Category */}
 					<div>
-						<label htmlFor="categotry" className="text-sm font-semibold">
+						<label htmlFor="category" className="text-sm font-semibold">
 							Category
 						</label>
 						<select

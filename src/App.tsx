@@ -18,6 +18,7 @@ import { CartPanel } from './components/CartPanel.tsx';
 import { SuggestProductForm } from './components/SuggestProductForm.tsx';
 import { LoadingState } from './components/LoadingState.tsx';
 import { ErrorState } from './components/ErrorState.tsx';
+import { PromoBanner } from './components/PromoBanner.tsx';
 import { groupByCategory } from './utils/groupByCategory';
 
 function App() {
@@ -105,6 +106,16 @@ function App() {
 		);
 	};
 
+	// Update title
+	const updateDocTitle = () => {
+		const cartQty = cart.reduce((total, item) => total + item.quantity, 0);
+		if (cartQty > 0) {
+			document.title = `SummitGear Market (${cartQty})`;
+		} else {
+			document.title = `SummitGear Market`;
+		}
+	};
+
 	// Other variables
 	const navLinks: NavLink[] = [
 		{ label: 'Shop', href: '/' },
@@ -148,9 +159,15 @@ function App() {
 		fetchProducts();
 	}, []);
 
+	useEffect(() => {
+		updateDocTitle();
+	}, [cart]);
+
 	return (
 		<div
 			className={`${theme === 'dark' ? 'dark' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-slate-900`}>
+			<PromoBanner />
+
 			{/* Nav Bar */}
 			<Navbar navLinks={navLinks} theme={theme} toggleTheme={toggleTheme} />
 
