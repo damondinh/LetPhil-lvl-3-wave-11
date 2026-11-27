@@ -1,8 +1,9 @@
-import type { NavLink } from '../types/navLink';
+import type { NavLink as NavLinkType } from '../types/navLink';
 import type { Theme } from '../types/theme';
+import { NavLink } from 'react-router';
 
 type NavbarProps = {
-	navLinks: NavLink[];
+	navLinks: NavLinkType[];
 	theme: Theme;
 	toggleTheme: () => void;
 };
@@ -22,33 +23,45 @@ export const Navbar = ({ navLinks, theme, toggleTheme }: NavbarProps) => {
 
 			{/* Nav Links */}
 			<div className="flex gap-6 item-center justify-between">
-				{navLinks.map((link) =>
-					// Cart Link
-					link.onClick ? (
-						<button
+				{navLinks.map(
+					(link) => (
+						<NavLink
 							key={link.href}
-							type="button"
-							onClick={link.onClick}
-							className="inline-flex text-sm text-slate-600 cursor-pointer hover:text-emerald-700 dark:text-slate-400">
-							{link.label}
-							{link.count !== undefined &&
-								`
-							(${link.count})`}
-						</button>
-					) : (
-						// Shop, Favourites links
-						<a
-							key={link.href}
-							href={link.href}
-							className="text-center text-sm text-slate-600 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400">
+							to={link.href}
+							className="text-center text-sm text-slate-600 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400 cursor-pointer">
 							{link.label}{' '}
 							{link.count !== undefined && link.count > 0 && (
 								<span className="rounded-full bg-emerald-800 px-1.5 py-0.5 text-xs font-semibold text-white">
 									{link.count}
 								</span>
 							)}
-						</a>
+						</NavLink>
 					),
+					// // Cart Link
+					// link.onClick ? (
+					// 	<button
+					// 		key={link.href}
+					// 		type="button"
+					// 		onClick={link.onClick}
+					// 		className="inline-flex text-sm text-slate-600 cursor-pointer hover:text-emerald-700 dark:text-slate-400">
+					// 		{link.label}
+					// 		{link.count !== undefined &&
+					// 			`
+					// 		(${link.count})`}
+					// 	</button>
+					// ) : (
+					// 	// Shop, Favourites links
+					// 	<a
+					// 		key={link.href}
+					// 		href={link.href}
+					// 		className="text-center text-sm text-slate-600 hover:text-emerald-700 dark:text-slate-400 dark:hover:text-emerald-400">
+					// 		{link.label}{' '}
+					// 		{link.count !== undefined && link.count > 0 && (
+					// 			<span className="rounded-full bg-emerald-800 px-1.5 py-0.5 text-xs font-semibold text-white">
+					// 				{link.count}
+					// 			</span>
+					// 		)}
+					// 	</a>
 				)}
 
 				{/* Toggle Theme */}

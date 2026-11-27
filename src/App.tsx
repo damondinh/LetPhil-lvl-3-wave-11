@@ -1,6 +1,10 @@
 // This is your storefront. Each ticket adds a piece to it.
 // Start with tickets/day-1/1.1-product-type-and-card.md
 import { useState, useEffect } from 'react';
+import { Routes, Route } from 'react-router';
+import { HomePage } from './pages/HomePage';
+import { FavouritesPage } from './pages/FavouritesPage';
+import { CartPage } from './pages/CartPage';
 import type { NavLink } from './types/navLink';
 import type { Theme } from './types/theme';
 import type { CartItem } from './types/cart';
@@ -168,12 +172,52 @@ function App() {
 			className={`${theme === 'dark' ? 'dark' : ''} flex flex-col min-h-screen bg-gray-50 dark:bg-slate-900`}>
 			<PromoBanner />
 
-			{/* Nav Bar */}
 			<Navbar navLinks={navLinks} theme={theme} toggleTheme={toggleTheme} />
 
 			<main className="flex-grow px-8 py-6">
-				<div>
-					{/* Search Bar */}
+				<Routes>
+					<Route
+						path="/"
+						element={
+							<HomePage
+								products={products}
+								favourites={favourites}
+								cart={cart}
+								searchText={searchText}
+								setSearchText={setSearchText}
+								toggleFavourite={toggleFavourite}
+								addToCart={addToCart}
+								onRetry={fetchProducts}
+								error={error}
+								loading={loading}
+							/>
+						}
+					/>
+					<Route
+						path="/favourites"
+						element={
+							<FavouritesPage
+								products={products}
+								favourites={favourites}
+								cart={cart}
+								toggleFavourite={toggleFavourite}
+								addToCart={addToCart}
+							/>
+						}
+					/>
+					<Route
+						path="/cart"
+						element={
+							<CartPage
+								cart={cart}
+								onDecrease={decreaseQuantity}
+								onIncrease={addToCart}
+								onRemove={removeFromCart}
+							/>
+						}
+					/>
+				</Routes>
+				{/* <div>
 					<SearchBar value={searchText} onChange={setSearchText} />
 					<p className="mt-2 text-sm text-slate-500">
 						Showing {filteredProducts.length} of {products.length} products
@@ -184,7 +228,6 @@ function App() {
 					) : error ? (
 						<ErrorState message={error} onRetry={fetchProducts} />
 					) : searchText === '' ? (
-						// Empty Search: -> Default: display all products
 						<ProductAll
 							products={products}
 							favourites={favourites}
@@ -192,7 +235,7 @@ function App() {
 							cart={cart}
 							onAddToCart={addToCart}
 						/>
-					) : // Searching: -> Display search results
+					) :
 					filteredProducts.length === 0 ? (
 						<EmptyState message="No products found" />
 					) : (
@@ -204,21 +247,20 @@ function App() {
 							onAddToCart={addToCart}
 						/>
 					)}
-				</div>
+				</div> */}
 
-				{/* Suggest Product Form */}
-				<SuggestProductForm categories={categories} />
+				{/* <SuggestProductForm categories={categories} /> */}
 			</main>
 			<Footer company={company} />
 
-			<CartPanel
+			{/* <CartPanel
 				cart={cart}
 				isOpen={isCartOpen}
 				onClose={closeCart}
 				onIncrease={addToCart}
 				onDecrease={decreaseQuantity}
 				onRemove={removeFromCart}
-			/>
+			/> */}
 		</div>
 	);
 }

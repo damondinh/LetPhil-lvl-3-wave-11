@@ -26,10 +26,10 @@ export const ProductAll = ({
 	} else {
 		content = (
 			<div>
-				<h1 className="text-xl font-bold mt-6 dark:text-white">
+				{/* <h1 className="text-xl font-bold mt-6 dark:text-white">
 					All Products
 					<span className="text-sm text-slate-400"> ({products.length})</span>
-				</h1>
+				</h1> */}
 				<div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
 					{products.map((product) => (
 						<ProductCard
